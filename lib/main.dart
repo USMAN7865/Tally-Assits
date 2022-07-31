@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +8,7 @@ import 'package:tassist/core/models/receivables.dart';
 import 'package:tassist/core/models/stockitem.dart';
 import 'package:tassist/core/models/vouchers.dart';
 import 'package:tassist/core/services/auth.dart';
-import 'package:tassist/core/services/database.dart';
+
 import 'package:tassist/core/services/inactivecustomerservice.dart';
 import 'package:tassist/core/services/payablesservice.dart';
 import 'package:tassist/core/services/receivablesservice.dart';
@@ -23,8 +20,16 @@ import 'core/models/company.dart';
 import 'core/models/ledger.dart';
 import 'core/services/companyservice.dart';
 import 'core/services/ledgerservice.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp.configure(
+      name: "",
+      options: FirebaseOptions(
+          googleAppID: "1:70604440739:web:c2e3dcf33c61be6282eb16",
+          apiKey: "AIzaSyCBvjF4nI87OStlTrUNXv_nEZTJlFe06_A",
+          storageBucket: "com-example-tassist.appspot.com"));
   runApp(MyApp());
 }
 
@@ -63,8 +68,6 @@ class _TopWidgetState extends State<TopWidget> {
 
   @override
   void initState() {
-    super.initState();
-
     // String uid = Provider.of<FirebaseUser>(context, listen: false).uid;
 
     // if (Platform.isIOS) {
@@ -98,8 +101,8 @@ class _TopWidgetState extends State<TopWidget> {
               subtitle: Text(message['notification']['body']),
             ),
             actions: <Widget>[
-              FlatButton(
-                color: Colors.amber,
+              TextButton(
+                // color: Colors.amber,
                 child: Text('Ok'),
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -114,6 +117,7 @@ class _TopWidgetState extends State<TopWidget> {
         print("onResume: $message");
       },
     );
+    super.initState();
   }
 
   /// Get the token, save it to the database for current user
